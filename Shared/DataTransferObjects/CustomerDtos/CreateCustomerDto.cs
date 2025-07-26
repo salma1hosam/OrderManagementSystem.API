@@ -4,10 +4,9 @@ namespace Shared.DataTransferObjects.CustomerDtos
 {
     public class CreateCustomerDto
     {
-        [Required]
+        [MinLength(3 , ErrorMessage = "Name field should be more than 3 characters")]
         public string Name { get; set; }
 
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
     }

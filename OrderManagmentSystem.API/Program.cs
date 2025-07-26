@@ -1,5 +1,6 @@
 using Domain.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using OrderManagementSystem.API.CustomMiddlewares;
 using Persistence.Data;
 using Persistence.Repositories;
@@ -26,6 +27,8 @@ namespace OrderManagementSystem.API
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
+            builder.Services.AddScoped<IProductService, ProductService>();
             #endregion
 
             var app = builder.Build();
