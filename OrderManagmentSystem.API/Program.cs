@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using OrderManagementSystem.API.CustomMiddlewares;
 using Persistence.Data;
 using Persistence.Repositories;
+using Services;
+using Services.Abstractions;
 
 namespace OrderManagementSystem.API
 {
@@ -19,11 +21,11 @@ namespace OrderManagementSystem.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<OrderManagementDbContext>(option =>
-            {
-                option.UseInMemoryDatabase(builder.Configuration.GetConnectionString("OrderManagementInMemoryDB"));
-            });
+            option.UseInMemoryDatabase(builder.Configuration.GetConnectionString("InMemoryDB"))
+            );
 
-            builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
             #endregion
 
             var app = builder.Build();
@@ -42,7 +44,7 @@ namespace OrderManagementSystem.API
             app.UseAuthorization();
 
 
-            app.MapControllers(); 
+            app.MapControllers();
             #endregion
 
             app.Run();

@@ -38,6 +38,7 @@ namespace OrderManagementSystem.API.CustomMiddlewares
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 BadRequestException badRequestException => GetBadRequestErrors(badRequestException, response),
+                ArgumentNullException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
             };
             httpContext.Response.StatusCode = response.StatusCode;
