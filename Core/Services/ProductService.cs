@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Exceptions;
 using Domain.Models;
 using Domain.Repository.Contracts;
 using Services.Abstractions;
@@ -15,6 +16,13 @@ namespace Services
             var rows = await _unitOfWork.SaveChangesAsync();
             if (rows < 0) throw new Exception("Product Is Not Created");
             return _mapper.Map<Product, ProductDto>(product);
+        }
+
+        public async Task<ProductDetailsDto> GetProductDetailsAsync(int productId)
+        {
+            var product = await _unitOfWork.GetRepository<Product , int>().GetByIdAsync(productId) 
+                ?? throw new ProductNotFoundException(productId);
+            return _mapper.Map<Product , ProductDetailsDto>(product);
         }
     }
 }
