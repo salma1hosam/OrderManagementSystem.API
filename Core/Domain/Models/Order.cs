@@ -11,5 +11,6 @@ namespace Domain.Models
         public int CustomerId { get; set; } //FK
         public Customer Customer { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; } = [];
+        public Invoice? Invoice { get; set; }
     }
 }

@@ -1,5 +1,7 @@
+using Domain.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
+using Persistence.Repositories;
 
 namespace OrderManagementSystem.API
 {
@@ -19,6 +21,8 @@ namespace OrderManagementSystem.API
             {
                 option.UseInMemoryDatabase(builder.Configuration.GetConnectionString("OrderManagementInMemoryDB"));
             });
+
+            builder.Services.AddScoped<IUnitOfWork , UnitOfWork>();
             #endregion
 
             var app = builder.Build();
