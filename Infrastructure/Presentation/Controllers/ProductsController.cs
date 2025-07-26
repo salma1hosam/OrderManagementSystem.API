@@ -19,5 +19,12 @@ namespace Presentation.Controllers
             var result = await _productService.GetProductDetailsAsync(productId);
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<ProductDto>> GetAllProducts()
+        {
+            var results = await _productService.GetAllProductsAsync();
+            return Ok(results);
+        }
     }
 }
