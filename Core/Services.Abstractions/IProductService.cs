@@ -7,5 +7,6 @@ namespace Services.Abstractions
         Task<ProductDto> CreateProductAsync(CreateProductDto createProductDto);
         Task<ProductDetailsDto> GetProductDetailsAsync(int productId);
         Task<IEnumerable<ProductDto>> GetAllProductsAsync();
+        Task<ProductDto> UpdateProductAsync(int productId , UpdateProductDto updateProductDto);
     }
 }

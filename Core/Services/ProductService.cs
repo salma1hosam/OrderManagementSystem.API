@@ -14,7 +14,7 @@ namespace Services
             var product = _mapper.Map<CreateProductDto, Product>(createProductDto);
             await _unitOfWork.GetRepository<Product, int>().CreateAsync(product);
             var rows = await _unitOfWork.SaveChangesAsync();
-            if (rows < 0) throw new Exception("Product Is Not Created");
+            if (rows < 0) throw new Exception("Failed to Create the Product");
             return _mapper.Map<Product, ProductDto>(product);
         }
 
@@ -29,6 +29,17 @@ namespace Services
             var product = await _unitOfWork.GetRepository<Product , int>().GetByIdAsync(productId) 
                 ?? throw new ProductNotFoundException(productId);
             return _mapper.Map<Product , ProductDetailsDto>(product);
+        }
+
+        public async Task<ProductDto> UpdateProductAsync(int productId , UpdateProductDto updateProductDto)
+        {
+            var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(productId) 
+                ?? throw new ProductNotFoundException(productId);
+            _mapper.Map(updateProductDto, product);
+            _unitOfWork.GetRepository<Product , int>().Update(product);
+            var rows = await _unitOfWork.SaveChangesAsync();
+            if (rows < 0) throw new Exception("Failed to Update the Product");
+            return _mapper.Map<Product, ProductDto>(product);
         }
     }
 }

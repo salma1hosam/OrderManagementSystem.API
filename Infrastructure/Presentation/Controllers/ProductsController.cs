@@ -26,5 +26,12 @@ namespace Presentation.Controllers
             var results = await _productService.GetAllProductsAsync();
             return Ok(results);
         }
+
+        [HttpPut("{productId:int}")]
+        public async Task<ActionResult<ProductDto>> UpdateProduct(int productId , UpdateProductDto updateProductDto)
+        {
+            var result = await _productService.UpdateProductAsync(productId, updateProductDto);
+            return Ok(result);
+        }
     }
 }

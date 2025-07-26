@@ -11,6 +11,7 @@ namespace Services.MappingProfiles
             CreateMap<CreateProductDto, Product>();
             CreateMap<Product , ProductDto>();
             CreateMap<Product , ProductDetailsDto>();
+            CreateMap<UpdateProductDto, Product>();
         }
     }
 }
