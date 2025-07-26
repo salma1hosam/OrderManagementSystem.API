@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
 
-namespace OrderManagmentSystem.API
+namespace OrderManagementSystem.API
 {
     public class Program
     {
@@ -11,7 +13,12 @@ namespace OrderManagmentSystem.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(); 
+            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<OrderManagementDbContext>(option =>
+            {
+                option.UseInMemoryDatabase(builder.Configuration.GetConnectionString("OrderManagementInMemoryDB"));
+            });
             #endregion
 
             var app = builder.Build();
