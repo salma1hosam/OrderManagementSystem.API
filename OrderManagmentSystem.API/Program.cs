@@ -1,5 +1,6 @@
 using Domain.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
+using OrderManagementSystem.API.CustomMiddlewares;
 using Persistence.Data;
 using Persistence.Repositories;
 
@@ -28,6 +29,8 @@ namespace OrderManagementSystem.API
             var app = builder.Build();
 
             #region Configure the HTTP request pipeline.
+            app.UseMiddleware<CustomExceptionHandlingMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
