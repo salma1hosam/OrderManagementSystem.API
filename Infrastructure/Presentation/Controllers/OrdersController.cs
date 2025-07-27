@@ -4,7 +4,7 @@ using Shared.DataTransferObjects.OrderDtos;
 
 namespace Presentation.Controllers
 {
-    public class OrderController(IOrderService _orderService) : ApiBaseController
+    public class OrdersController(IOrderService _orderService) : ApiBaseController
     {
         [HttpPost]
         public async Task<ActionResult<OrderToReturnDto>> CreateOrder(CreateOrderDto createOrderDto)
