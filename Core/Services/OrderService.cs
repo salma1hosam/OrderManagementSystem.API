@@ -93,5 +93,12 @@ namespace Services
                 ?? throw new OrderNotFoundException($"Order with id = {orderId} is Not Found");
             return _mapper.Map<Order ,  OrderDetailsDto>(order);
         }
+
+        public async Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync()
+        {
+            var orders = await _unitOfWork.OrderRepository.GetAllOrdersAsync();
+            if (!orders.Any()) throw new OrderNotFoundException("No Orders Found");
+            return _mapper.Map<IEnumerable<Order> , IEnumerable<OrderToReturnDto>>(orders);
+        }
     }
 }

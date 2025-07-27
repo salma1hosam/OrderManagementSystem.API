@@ -6,6 +6,6 @@ namespace Domain.Repository.Contracts
     {
         Task<IEnumerable<Order>> GetAllOrdersByCustomerIdAsync(int custermorId);
         Task<Order> GetOrderDetailsAsync(Guid orderId);
-        Task<IEnumerable<Order>> GetAllOrders();
+        Task<IEnumerable<Order>> GetAllOrdersAsync();
     }
 }

@@ -7,10 +7,11 @@ namespace Persistence.Repositories
 {
     public class OrderRepository(OrderManagementDbContext _dbContext) : GenericRepository<Order, Guid>(_dbContext), IOrderRepository
     {
-        public async Task<IEnumerable<Order>> GetAllOrders()
+        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
             return await _dbContext.Orders.Include(O => O.OrderItems)
                                           .ThenInclude(OI => OI.Product)
+                                          .Include(O => O.Customer)
                                           .ToListAsync();
         }
 

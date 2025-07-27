@@ -6,5 +6,6 @@ namespace Services.Abstractions
     {
         Task<OrderToReturnDto> CreateOrderAsync(CreateOrderDto createOrderDto);
         Task<OrderDetailsDto> GetOrderDetailsAsync(Guid orderId);
+        Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync();
     }
 }

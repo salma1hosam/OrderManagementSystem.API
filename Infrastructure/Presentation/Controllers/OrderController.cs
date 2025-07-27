@@ -19,5 +19,12 @@ namespace Presentation.Controllers
             var result = await _orderService.GetOrderDetailsAsync(orderId);
             return Ok(result);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<OrderToReturnDto>>> GetAllOrders()
+        {
+            var result = await _orderService.GetAllOrdersAsync();
+            return Ok(result);
+        }
     }
 }
