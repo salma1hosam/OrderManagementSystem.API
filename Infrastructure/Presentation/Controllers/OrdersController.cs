@@ -26,5 +26,12 @@ namespace Presentation.Controllers
             var result = await _orderService.GetAllOrdersAsync();
             return Ok(result);
         }
+
+        [HttpPut("{orderId}/status")]
+        public async Task<ActionResult<UpdatedOrderStatusDto>> UpdatteStatus(Guid orderId , OrderStatusDto orderStatusDto)
+        {
+            var result = await _orderService.UpdateStatusAsync(orderId , orderStatusDto);
+            return Ok(result);
+        }
     }
 }

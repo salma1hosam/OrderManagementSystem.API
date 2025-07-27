@@ -6,6 +6,7 @@ using Persistence.Data;
 using Persistence.Repositories;
 using Services;
 using Services.Abstractions;
+using Services.Utilities;
 
 namespace OrderManagementSystem.API
 {
@@ -31,6 +32,9 @@ namespace OrderManagementSystem.API
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSetting"));
+            builder.Services.AddScoped<IEmailService , EmailService>();
             #endregion
 
             var app = builder.Build();

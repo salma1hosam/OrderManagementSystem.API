@@ -4,11 +4,12 @@ using Domain.Models;
 using Domain.Models.Enums;
 using Domain.Repository.Contracts;
 using Services.Abstractions;
+using Shared;
 using Shared.DataTransferObjects.OrderDtos;
 
 namespace Services
 {
-    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper) : IOrderService
+    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper, IEmailService _emailService) : IOrderService
     {
         public async Task<OrderToReturnDto> CreateOrderAsync(CreateOrderDto createOrderDto)
         {
@@ -89,16 +90,38 @@ namespace Services
 
         public async Task<OrderDetailsDto> GetOrderDetailsAsync(Guid orderId)
         {
-            var order = await _unitOfWork.OrderRepository.GetOrderDetailsAsync(orderId) 
+            var order = await _unitOfWork.OrderRepository.GetOrderDetailsAsync(orderId)
                 ?? throw new OrderNotFoundException($"Order with id = {orderId} is Not Found");
-            return _mapper.Map<Order ,  OrderDetailsDto>(order);
+            return _mapper.Map<Order, OrderDetailsDto>(order);
         }
 
         public async Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync()
         {
             var orders = await _unitOfWork.OrderRepository.GetAllOrdersAsync();
             if (!orders.Any()) throw new OrderNotFoundException("No Orders Found");
-            return _mapper.Map<IEnumerable<Order> , IEnumerable<OrderToReturnDto>>(orders);
+            return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderToReturnDto>>(orders);
+        }
+
+        public async Task<UpdatedOrderStatusDto> UpdateStatusAsync(Guid orderId, OrderStatusDto orderStatusDto)
+        {
+            var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId) ?? throw new OrderNotFoundException($"Order with Id = {orderId} is Not Found");
+            order.Status = Enum.Parse<OrderStatus>(orderStatusDto.Status);
+            _unitOfWork.OrderRepository.Update(order);
+            var rows = await _unitOfWork.SaveChangesAsync();
+            if (rows < 0) throw new Exception("Failed To Update Order Status");
+            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(order.CustomerId) ?? throw new CustomerNotFoundException();
+            var email = new Email()
+            {
+                To = customer.Email,
+                Subject = $"Your Order #{orderId} Status Updated",
+                Body = $"Hello {customer.Name},\n\nYour order status is now: {orderStatusDto.Status}"
+            };
+            await _emailService.SendEmailAsync(email);
+            return new UpdatedOrderStatusDto
+            {
+                Id = orderId,
+                Status = order.Status.ToString()
+            };
         }
     }
 }
