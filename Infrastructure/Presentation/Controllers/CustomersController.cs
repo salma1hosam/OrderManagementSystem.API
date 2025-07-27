@@ -12,5 +12,12 @@ namespace Presentation.Controllers
             var result = await _customerService.CreateCustomerAsync(createCustomerDto);
             return Ok(result);
         }
+
+        [HttpGet("{customerId}/orders")]
+        public async Task<ActionResult<IEnumerable<CustomerOrderDto>>> GetAllCustomerOrders(int customerId)
+        {
+            var result = await _customerService.GetAllCustomerOrdersAsync(customerId);
+            return Ok(result);
+        }
     }
 }

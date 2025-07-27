@@ -9,6 +9,9 @@ namespace Domain.Repository.Contracts
         Task<TEntity?> GetByIdAsync(TKey id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         void Update(TEntity entity);
-        Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>> predict = null);
+        Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate = null);
+        public IQueryable<TEntity> Get<TEntity, TProperty>(Expression<Func<TEntity, bool>> predicate = null,
+                                                           Expression<Func<TEntity, TProperty>> navigationPropertyPath = null) where TEntity : BaseEntity<TKey>;
+
     }
 }

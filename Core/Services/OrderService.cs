@@ -13,14 +13,14 @@ namespace Services
         public async Task<OrderToReturnDto> CreateOrderAsync(CreateOrderDto createOrderDto)
         {
             //Get Customer
-            var customer = _unitOfWork.GetRepository<Customer, int>().Get(C => C.Email == createOrderDto.Email).Result.FirstOrDefault()
+            var customer = _unitOfWork.CustomerRepository.Get(C => C.Email == createOrderDto.Email).Result.FirstOrDefault()
                 ?? throw new CustomerNotFoundException();
 
             //Create OrderItem List
             List<OrderItem> orderItems = [];
             foreach (var item in createOrderDto.OrderItems)
             {
-                var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(item.ProductId)
+                var product = await _unitOfWork.ProductRepository.GetByIdAsync(item.ProductId)
                     ?? throw new ProductNotFoundException(item.ProductId);
 
                 if (product.Stock < item.Quantity)
@@ -36,7 +36,7 @@ namespace Services
                 orderItems.Add(orderItem);
 
                 product.Stock -= item.Quantity;
-                _unitOfWork.GetRepository<Product, int>().Update(product);
+                _unitOfWork.ProductRepository.Update(product);
             }
 
             //Calculate the Order Total Amount and Discount
@@ -56,7 +56,7 @@ namespace Services
                 TotalAmount = totalAmount * (1 - GetDiscount(totalAmount))
             };
 
-            await _unitOfWork.GetRepository<Order, Guid>().CreateAsync(order);
+            await _unitOfWork.OrderRepository.CreateAsync(order);
 
             //Generate Invoice
             var invoice = new Invoice()
@@ -66,11 +66,11 @@ namespace Services
                 TotalAmount = order.TotalAmount,
             };
 
-            await _unitOfWork.GetRepository<Invoice, Guid>().CreateAsync(invoice);
+            await _unitOfWork.InvoiceRepository.CreateAsync(invoice);
             order.Invoice = invoice;
 
             var rows = await _unitOfWork.SaveChangesAsync();
-            if (rows < 0) throw new BadRequestException("Failed to Create the Order");
+            if (rows < 0) throw new Exception("Failed to Create the Order");
 
             return _mapper.Map<Order, OrderToReturnDto>(order);
         }
