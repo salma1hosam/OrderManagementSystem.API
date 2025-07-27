@@ -11,6 +11,7 @@ namespace Persistence.Repositories
         private readonly Lazy<ICustomerRepository> _customerRepository;
         private readonly Lazy<IOrderRepository> _orderRepository;
         private readonly Lazy<IInvoiceRepository> _invoiceRepository;
+        private readonly Lazy<IUserRepository> _userRepository;
 
         public UnitOfWork(OrderManagementDbContext dbContext)
         {
@@ -19,6 +20,7 @@ namespace Persistence.Repositories
             _customerRepository = new Lazy<ICustomerRepository>(() => new CustomerRepository(dbContext));
             _orderRepository = new Lazy<IOrderRepository>(() => new OrderRepository(dbContext));
             _invoiceRepository = new Lazy<IInvoiceRepository>(() => new InvoiceRepository(dbContext));
+            _userRepository = new Lazy<IUserRepository>(() => new UserRepository(dbContext));
         }
         public IProductRepository ProductRepository => _productRepository.Value;
 
@@ -28,19 +30,7 @@ namespace Persistence.Repositories
 
         public IInvoiceRepository InvoiceRepository => _invoiceRepository.Value;
 
-        //private readonly Dictionary<string, object> _repositories = [];
-        //public IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : BaseEntity<TKey>
-        //{
-        //    var typeName = typeof(TEntity).Name;
-        //    if (_repositories.TryGetValue(typeName, out object? value))
-        //        return (IGenericRepository<TEntity, TKey>)value;
-        //    else
-        //    {
-        //        var repository = new GenericRepository<TEntity, TKey>(_dbContext);
-        //        _repositories.Add(typeName, repository);
-        //        return repository;
-        //    }
-        //}
+        public IUserRepository UserRepository => _userRepository.Value;
 
         public async Task<int> SaveChangesAsync() => await _dbContext.SaveChangesAsync();
     }

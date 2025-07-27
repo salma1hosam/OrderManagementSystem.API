@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared.DataTransferObjects.OrderDtos;
 
@@ -20,6 +21,7 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderToReturnDto>>> GetAllOrders()
         {
@@ -27,6 +29,7 @@ namespace Presentation.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{orderId}/status")]
         public async Task<ActionResult<UpdatedOrderStatusDto>> UpdatteStatus(Guid orderId , OrderStatusDto orderStatusDto)
         {

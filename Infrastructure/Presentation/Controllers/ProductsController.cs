@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared.DataTransferObjects.ProductDtos;
 
@@ -6,6 +7,7 @@ namespace Presentation.Controllers
 {
     public class ProductsController(IProductService _productService) : ApiBaseController
     {
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductDto createProductDto)
         {
@@ -27,6 +29,7 @@ namespace Presentation.Controllers
             return Ok(results);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{productId:int}")]
         public async Task<ActionResult<ProductDto>> UpdateProduct(int productId , UpdateProductDto updateProductDto)
         {

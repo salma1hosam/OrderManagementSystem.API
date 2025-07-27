@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared.DataTransferObjects.InvoicDtos;
 
 namespace Presentation.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class InvoicesController(IInvoiceService _invoiceService) : ApiBaseController
     {
         [HttpGet("{invoiceId:guid}")]

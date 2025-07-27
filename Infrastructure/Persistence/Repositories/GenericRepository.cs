@@ -16,22 +16,6 @@ namespace Persistence.Repositories
         {
             return _dbContext.Set<TEntity>().Where(predicate);
         }
-
-        public IQueryable<TEntity> Get<TEntity, TProperty>(Expression<Func<TEntity, bool>> predicate = null,
-                                                           Expression<Func<TEntity, TProperty>> navigationPropertyPath = null) where TEntity : BaseEntity<TKey>
-        {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
-
-            if (navigationPropertyPath is not null)
-                query = query.Include(navigationPropertyPath);
-
-            if (predicate is not null)
-                query = query.Where(predicate);
-
-            return query;
-        }
-
-
         public async Task<TEntity?> GetByIdAsync(TKey id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
         public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
