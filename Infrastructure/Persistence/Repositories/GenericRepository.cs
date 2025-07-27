@@ -12,7 +12,10 @@ namespace Persistence.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbContext.Set<TEntity>().ToListAsync();
 
-        public async Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>> predict = null) => _dbContext.Set<TEntity>().Where(predict);
+        public async Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>> predict = null)
+        {
+            return _dbContext.Set<TEntity>().Where(predict);
+        }
 
         public async Task<TEntity?> GetByIdAsync(TKey id) => await _dbContext.Set<TEntity>().FindAsync(id);
 

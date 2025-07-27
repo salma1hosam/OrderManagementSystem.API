@@ -37,18 +37,12 @@ namespace OrderManagementSystem.API.CustomMiddlewares
             response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
-                BadRequestException badRequestException => GetBadRequestErrors(badRequestException, response),
+                BadRequestException => StatusCodes.Status400BadRequest,
                 ArgumentNullException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
             };
             httpContext.Response.StatusCode = response.StatusCode;
             await httpContext.Response.WriteAsJsonAsync(response);
-        }
-
-        private int GetBadRequestErrors(BadRequestException badRequestException, ErrorToReturn response)
-        {
-            response.Errors = badRequestException.Errors;
-            return StatusCodes.Status400BadRequest;
         }
     }
 }

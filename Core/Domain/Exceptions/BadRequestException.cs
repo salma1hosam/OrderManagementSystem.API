@@ -1,7 +1,6 @@
 ﻿namespace Domain.Exceptions
 {
-    public sealed class BadRequestException(List<string> errors) : Exception()
+    public sealed class BadRequestException(string message) : Exception(message)
     {
-        public List<string> Errors { get; } = errors;
     }
 }

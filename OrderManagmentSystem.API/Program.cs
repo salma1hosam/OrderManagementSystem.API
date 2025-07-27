@@ -29,6 +29,7 @@ namespace OrderManagementSystem.API
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             #endregion
 
             var app = builder.Build();
