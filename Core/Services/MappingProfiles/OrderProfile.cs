@@ -19,6 +19,11 @@ namespace Services.MappingProfiles
                 .ForMember(distination => distination.OrderId, option => option.MapFrom(src => src.Id));
             CreateMap<OrderItem, CustomerOrderItemDto>()
                 .ForMember(distination => distination.ProductName, option => option.MapFrom(src => src.Product.Name));
+
+            CreateMap<Order, OrderDetailsDto>()
+                .ForMember(distination => distination.Email, option => option.MapFrom(src => src.Customer.Email)); ;
+            CreateMap<Invoice, OrderInvoiceDto>()
+                .ForMember(distination => distination.InvoiceId, option => option.MapFrom(src => src.Id)); ;
         }
     }
 }

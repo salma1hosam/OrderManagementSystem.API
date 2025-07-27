@@ -12,5 +12,12 @@ namespace Presentation.Controllers
             var result = await _orderService.CreateOrderAsync(createOrderDto);
             return Ok(result);
         }
+
+        [HttpGet("{orderId:guid}")]
+        public async Task<ActionResult<OrderDetailsDto>> GetOrderDetails(Guid orderId)
+        {
+            var result = await _orderService.GetOrderDetailsAsync(orderId);
+            return Ok(result);
+        }
     }
 }

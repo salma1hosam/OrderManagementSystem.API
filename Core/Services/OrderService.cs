@@ -86,5 +86,12 @@ namespace Services
 
             return discount;
         }
+
+        public async Task<OrderDetailsDto> GetOrderDetailsAsync(Guid orderId)
+        {
+            var order = await _unitOfWork.OrderRepository.GetOrderDetailsAsync(orderId) 
+                ?? throw new OrderNotFoundException($"Order with id = {orderId} is Not Found");
+            return _mapper.Map<Order ,  OrderDetailsDto>(order);
+        }
     }
 }
